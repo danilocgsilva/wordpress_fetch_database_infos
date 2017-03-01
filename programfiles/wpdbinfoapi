@@ -1,2 +1,20 @@
 #!/bin/bash
 
+# Errors declaration
+declare -a wpdbinfoapi_errors
+
+# Check if the first argument was given
+if [ ${#1} -eq 0 ]; then
+    wpdbinfoapi_errors+=('The first argument is empty. Must be the wp-config.php file.')
+else
+    # Check if the first argument is a file
+    if ! [ -f $1 ]; then
+        wpdbinfoapi_errors+=('The first argument is not a file. Must be the wp-config.php file.')
+    fi
+
+    # Check if the file provided is readable
+    if ! [ -r $1 ]; then
+        wpdbinfoapi_errors+=('The first file is a file that is not readable.')
+    fi
+fi
+
