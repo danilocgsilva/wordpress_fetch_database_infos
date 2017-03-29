@@ -18,3 +18,14 @@ else
     fi
 fi
 
+errors_count=${#wpdbinfoapi_errors[@]}
+if [ $errors_count -gt 0 ]; then
+    for i in `seq 0 $(expr $errors_count - 1)`; do
+        echo ${wpdbinfoapi_errors[$i]}
+    done
+    wpdbinfoapi_ecode=1
+else
+    wpdbinfoapi_ecode=0
+fi
+
+echo Error code: $wpdbinfoapi_ecode
