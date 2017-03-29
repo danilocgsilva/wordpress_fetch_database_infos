@@ -1,34 +1,15 @@
 #!/bin/bash
 
 # Utility version
-wpdbinfoapi_v=1
+wpdbinfoapi_v=2
 
-# Errors declaration
-declare -a wpdbinfoapi_errors
-
-# Check if the first argument was given
-if [ ${#1} -eq 0 ]; then
-    wpdbinfoapi_errors+=('The first argument is empty. Must be the wp-config.php file.')
-else
-    # Check if the first argument is a file
-    if ! [ -f $1 ]; then
-        wpdbinfoapi_errors+=('The first argument is not a file. Must be the wp-config.php file.')
-    else
-        # Check if the file provided is readable
-        if ! [ -r $1 ]; then
-            wpdbinfoapi_errors+=('The first file is a file that is not readable.')
-        fi
-    fi
+# Checks for requirements
+if ! checkforfilereadable_source=$(which checkforfilereadable) 2> /dev/null; then
+    echo checkforfilereadable utility is missing. Get it from https://github.com/danilocgsilva
+    exit
 fi
 
-errors_count=${#wpdbinfoapi_errors[@]}
-if [ $errors_count -gt 0 ]; then
-    for i in `seq 0 $(expr $errors_count - 1)`; do
-        echo ${wpdbinfoapi_errors[$i]}
-    done
-    wpdbinfoapi_ecode=1
-else
-    wpdbinfoapi_ecode=0
-fi
+# Executes the utility. In this way, it also can have all of its internal variables.
+source $checkforfilereadable_source
 
-echo Error code: $wpdbinfoapi_ecode
+echo Error code: $checkforfilereadable_ecode
