@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Utility version
-wpdbinfoapi_v=2
+wpdbinfoapi_v=3
 
-# Checks for requirements
+# Checks for requirements, setting the $checkforfilereadable_source if succeds
 if ! checkforfilereadable_source=$(which checkforfilereadable) 2> /dev/null; then
     echo checkforfilereadable utility is missing. Get it from https://github.com/danilocgsilva
     exit
@@ -12,4 +12,11 @@ fi
 # Executes the utility. In this way, it also can have all of its internal variables.
 source $checkforfilereadable_source
 
-echo Error code: $checkforfilereadable_ecode
+if [ $checkforfilereadable_ecode -ne 0 ]; then
+    exit
+fi
+
+wpdbinfoapi_databasename=$(sed -n /define*.*DB_NAME/p $1 | cut -f4 -d\')
+wpdbinfoapi_databaseuser=$(sed -n /define*.*DB_USER/p $1 | cut -f4 -d\')
+wpdbinfoapi_databasepass=$(sed -n /define*.*DB_PASSWORD/p $1 | cut -f4 -d\')
+wpdbinfoapi_databasehost=$(sed -n /define*.*DB_HOST/p $1 | cut -f4 -d\')
