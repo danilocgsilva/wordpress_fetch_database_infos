@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Utility version
+wpdbinfoapi_v=1
+
 # Errors declaration
 declare -a wpdbinfoapi_errors
 
