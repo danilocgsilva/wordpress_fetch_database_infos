@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ## This utility creates the followinf variables:
+#  $wpdbinfoapi_iswordpresssite
 #  $wpdbinfoapi_databasename
 #  $wpdbinfoapi_databaseuser
 #  $wpdbinfoapi_databasepass
@@ -28,10 +29,12 @@ do_wpdbinfoapi() {
     wpconfigfile=$1/wp-config.php
     if ! [ -f $wpconfigfile ]; then
         echo The WordPress configuration file was not found. Did the path provided corresponds to a WordPress installation or does it is empty?
+		wpdbinfoapi_iswordpresssite=0
         return
     fi
 
     # If everything goes right, fetch the variables
+	wpdbinfoapi_iswordpresssite=1
     wpdbinfoapi_databasename=$(sed -n /define*.*DB_NAME/p $wpconfigfile | cut -f4 -d\')
     wpdbinfoapi_databaseuser=$(sed -n /define*.*DB_USER/p $wpconfigfile | cut -f4 -d\')
     wpdbinfoapi_databasepass=$(sed -n /define*.*DB_PASSWORD/p $wpconfigfile | cut -f4 -d\')
