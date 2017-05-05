@@ -1,0 +1,15 @@
+{
+  "name": "wordpress_fetch_database_infos",
+  "homepage": "https://github.com/danilocgsilva/wordpress_fetch_database_infos",
+  "authors": [
+    "Danilo Silva <danilocgsilva@gmail.com>"
+  ],
+  "description": "An shell script to automatically fetch the WordPress database infos.",
+  "main": "",
+  "keywords": [
+    "WordPress",
+    "Shell",
+    "web"
+  ],
+  "license": "MIT"
+}
