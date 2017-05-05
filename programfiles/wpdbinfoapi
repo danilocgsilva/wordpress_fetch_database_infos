@@ -1,22 +1,39 @@
 #!/bin/bash
 
+## This utility creates the followinf variables:
+#  $wpdbinfoapi_databasename
+#  $wpdbinfoapi_databaseuser
+#  $wpdbinfoapi_databasepass
+#  $wpdbinfoapi_databasehost
+
+
 # Utility version
-wpdbinfoapi_v=3
+wpdbinfoapi_version=4
 
-# Checks for requirements, setting the $checkforfilereadable_source if succeds
-if ! checkforfilereadable_source=$(which checkforfilereadable) 2> /dev/null; then
-    echo checkforfilereadable utility is missing. Get it from https://github.com/danilocgsilva
-    exit
-fi
+do_wpdbingoapi() {
 
-# Executes the utility. In this way, it also can have all of its internal variables.
-source $checkforfilereadable_source
+    # Checks if the first parameter was provided
+    if [ -z $1 ]; then
+        echo You need provides the first paramater to be the wordpress base directory.
+        return
+    fi
 
-if [ $checkforfilereadable_ecode -ne 0 ]; then
-    exit
-fi
+    # Checks if the parameter provides corresponds to a directory
+    if ! [ -d $1 ]; then
+        echo The paramater provides does not corresponds to a folder.
+        return
+    fi
 
-wpdbinfoapi_databasename=$(sed -n /define*.*DB_NAME/p $1 | cut -f4 -d\')
-wpdbinfoapi_databaseuser=$(sed -n /define*.*DB_USER/p $1 | cut -f4 -d\')
-wpdbinfoapi_databasepass=$(sed -n /define*.*DB_PASSWORD/p $1 | cut -f4 -d\')
-wpdbinfoapi_databasehost=$(sed -n /define*.*DB_HOST/p $1 | cut -f4 -d\')
+    # Checks if there are a wp-config.php file inside the provided directory.
+    wpconfigfile=$1/wp-config.php
+    if [ -f $wpconfigfile ]; then
+        echo The WordPress configuration file was not found. Did the path provided corresponds to a WordPress installation or does it is empty?
+        return
+    fi
+
+    # If everything goes right, fetch the variables
+    wpdbinfoapi_databasename=$(sed -n /define*.*DB_NAME/p $1 | cut -f4 -d\')
+    wpdbinfoapi_databaseuser=$(sed -n /define*.*DB_USER/p $1 | cut -f4 -d\')
+    wpdbinfoapi_databasepass=$(sed -n /define*.*DB_PASSWORD/p $1 | cut -f4 -d\')
+    wpdbinfoapi_databasehost=$(sed -n /define*.*DB_HOST/p $1 | cut -f4 -d\')
+}
