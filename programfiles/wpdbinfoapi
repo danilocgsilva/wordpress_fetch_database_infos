@@ -10,7 +10,7 @@
 # Utility version
 wpdbinfoapi_version=4
 
-do_wpdbingoapi() {
+do_wpdbinfoapi() {
 
     # Checks if the first parameter was provided
     if [ -z $1 ]; then
