@@ -8,9 +8,14 @@
 #  $wpdbinfoapi_databasehost
 
 
+##
 # Utility version
+#
 wpdbinfoapi_version=4
 
+##
+# The main function,m that must be called by the outer script
+#
 do_wpdbinfoapi() {
 
     # Checks if the first parameter was provided
